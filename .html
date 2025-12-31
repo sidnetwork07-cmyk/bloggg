@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Hub — Free Smart Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --accent: #ff00c8;
+            --bg: #0f0c29;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Particles Background */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-10vh) rotate(360deg); }
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.5));
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+        .btn-explore {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+        }
+
+        .btn-explore:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(112, 0, 255, 0.6);
+        }
+
+        /* Tools Section */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+        }
+
+        .card h3 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+        }
+
+        /* Inputs & Buttons */
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            transition: 0.2s;
+            margin: 5px 2px;
+        }
+
+        .btn-main { background: var(--primary); color: #000; }
+        .btn-sec { background: rgba(255,255,255,0.1); color: #fff; }
+        button:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        /* Specific Tool UI */
+        #chat-box {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .msg { margin: 8px 0; padding: 8px 12px; border-radius: 10px; max-width: 80%; font-size: 0.9rem; }
+        .user-msg { background: var(--secondary); align-self: flex-end; margin-left: auto; }
+        .bot-msg { background: var(--glass); border: 1px solid var(--border); }
+
+        #img-result {
+            width: 100%;
+            height: 200px;
+            background: #222;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            display: none;
+        }
+
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles"></div>
+
+    <section class="hero">
+        <h1>AI Tools Hub — Free Smart Tools</h1>
+        <p>Try AI Chat, Image, Voice & Quotes — all in one place.</p>
+        <a href="#tools" class="btn-explore">🚀 Explore Tools</a>
+    </section>
+
+    <div class="container" id="tools">
+        <div class="grid">
+            
+            <div class="card">
+                <h3>💬 AI Chatbot</h3>
+                <div id="chat-box">
+                    <div class="msg bot-msg">Hello! How can I assist you today?</div>
+                </div>
+                <input type="text" id="chat-input" placeholder="Ask me anything...">
+                <button class="btn-main" onclick="sendMessage()">Send</button>
+            </div>
+
+            <div class="card">
+                <h3>🎨 Image Generator</h3>
+                <input type="text" id="img-prompt" placeholder="A futuristic city in neon pink...">
+                <img id="img-result" src="" alt="Generated AI">
+                <div id="img-loader" class="loader"></div>
+                <button class="btn-main" onclick="generateImage()">Generate Image</button>
+                <div id="img-actions" style="display:none">
+                    <button class="btn-sec" onclick="downloadImage()">📥 Download</button>
+                    <button class="btn-sec" onclick="copyToClipboard(document.getElementById('img-result').src)">🔗 Copy URL</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🔊 AI Voice Generator</h3>
+                <textarea id="tts-text" rows="3" placeholder="Type something for the AI to say..."></textarea>
+                <button class="btn-main" onclick="speakText()">📢 Speak</button>
+                <button class="btn-sec" onclick="downloadVoice()">💾 Download Voice</button>
+            </div>
+
+            <div class="card">
+                <h3>📜 AI Quote Generator</h3>
+                <div id="quote-container" style="min-height: 80px; margin-bottom: 15px; font-style: italic;">
+                    "Press the button to get inspired."
+                </div>
+                <button class="btn-main" onclick="fetchQuote()">✨ New Quote</button>
+                <button class="btn-sec" onclick="copyQuote()">🔗 Copy Quote</button>
+            </div>
+
+            <div class="card">
+                <h3>📝 Text Summarizer</h3>
+                <textarea id="sum-text" rows="3" placeholder="Paste long text here..."></textarea>
+                <div id="sum-result" style="margin-bottom:15px; font-size:0.9rem; color:var(--primary)"></div>
+                <button class="btn-main" onclick="summarizeText()">✂️ Summarize</button>
+                <button class="btn-sec" onclick="copyToClipboard(document.getElementById('sum-result').innerText)">🔗 Copy</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        Made with ❤️ by finisher tech &copy; 2025
+    </footer>
+
+    <script>
+        // 1. Background Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = Math.random() * 5 + 2 + 'px';
+            p.style.width = size;
+            p.style.height = size;
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            particlesContainer.appendChild(p);
+        }
+
+        // 2. AI Chatbot
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const box = document.getElementById('chat-box');
+            if(!input.value) return;
+
+            const userMsg = input.value;
+            box.innerHTML += `<div class="msg user-msg">${userMsg}</div>`;
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
+
+            try {
+                const res = await fetch(`https://api.monkedev.com/fun/chat?msg=${encodeURIComponent(userMsg)}`);
+                const data = await res.json();
+                box.innerHTML += `<div class="msg bot-msg">${data.response}</div>`;
+            } catch {
+                box.innerHTML += `<div class="msg bot-msg">Sorry, I'm having trouble connecting.</div>`;
+            }
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // 3. Image Generator
+        function generateImage() {
+            const prompt = document.getElementById('img-prompt').value;
+            const img = document.getElementById('img-result');
+            const loader = document.getElementById('img-loader');
+            const actions = document.getElementById('img-actions');
+
+            if(!prompt) return alert("Please enter a prompt");
+
+            loader.style.display = 'block';
+            img.style.display = 'none';
+            
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1080&height=1080&nologo=true`;
+            
+            img.src = imageUrl;
+            img.onload = () => {
+                loader.style.display = 'none';
+                img.style.display = 'block';
+                actions.style.display = 'block';
+            };
+        }
+
+        async function downloadImage() {
+            const img = document.getElementById('img-result');
+            const response = await fetch(img.
